@@ -150,7 +150,7 @@ watchEffect(() => {
               :to="{
                 name: 'space-proposal-overview',
                 params: {
-                  proposal: proposal.proposal_id,
+                  proposal: proposal.proposal_id || proposal.id,
                   space: `${proposal.network}:${proposal.space.id}`
                 }
               }"
@@ -189,7 +189,7 @@ watchEffect(() => {
               :to="{
                 name: 'space-proposal-votes',
                 params: {
-                  proposal: proposal.proposal_id,
+                  proposal: proposal.proposal_id || proposal.id,
                   space: `${proposal.network}:${proposal.space.id}`
                 }
               }"
@@ -208,7 +208,7 @@ watchEffect(() => {
                 :to="{
                   name: 'space-proposal-discussion',
                   params: {
-                    proposal: proposal.proposal_id,
+                    proposal: proposal.proposal_id || proposal.id,
                     space: `${proposal.network}:${proposal.space.id}`
                   }
                 }"
@@ -233,7 +233,7 @@ watchEffect(() => {
             </template>
             <template v-if="boostCount > 0">
               <a
-                :href="`https://v1.snapshot.box/#/${proposal.space.id}/proposal/${proposal.proposal_id}`"
+                :href="`https://v1.snapshot.box/#/${proposal.space.id}/proposal/${proposal.proposal_id || proposal.id}`"
                 class="flex items-center"
                 target="_blank"
               >
