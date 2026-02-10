@@ -5,6 +5,7 @@ import { SpaceMetadataLabel } from '@/types';
 
 const props = defineProps<{
   open: boolean;
+  loading?: boolean;
   initialState?: SpaceMetadataLabel;
 }>();
 
@@ -17,7 +18,7 @@ const form = ref(
   props.initialState ? clone(props.initialState) : clone(generateDefaultState())
 );
 
-const definition = {
+const definition = computed(() => ({
   type: 'object',
   title: 'Space',
   additionalProperties: false,
@@ -44,10 +45,10 @@ const definition = {
       showControls: true
     }
   }
-};
+}));
 
 const formErrors = computed(() => {
-  const validator = getValidator(definition);
+  const validator = getValidator(definition.value);
   return validator.validate(form.value, { skipEmptyOptionalFields: true });
 });
 
@@ -83,7 +84,7 @@ watch(
     </template>
     <div class="flex items-center max-w-md gap-3 pt-4 px-4">
       <UiProposalLabel
-        :label="form.name || 'label preview'"
+        :label="form.name || 'Label preview'"
         :color="form.color"
       />
       <div class="truncate">
@@ -98,7 +99,12 @@ watch(
       />
     </div>
     <template #footer>
-      <UiButton class="w-full" :disabled="!formValid" @click="handleSubmit">
+      <UiButton
+        class="w-full"
+        :disabled="!formValid || loading"
+        :loading="loading"
+        @click="handleSubmit"
+      >
         Confirm
       </UiButton>
     </template>

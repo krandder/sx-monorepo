@@ -43,6 +43,7 @@ const { isWhiteLabel } = useWhiteLabel();
 
 const { param } = useRouteParser('space');
 const { resolved, address, networkId } = useResolve(param);
+const { spaceType } = useTownhallSpace(param);
 const { data: spaceData } = useSpaceQuery({
   networkId: networkId,
   spaceId: address
@@ -211,14 +212,30 @@ function getNavigationConfig(
           name: 'Overview',
           icon: IHGlobeAlt
         },
-        proposals: {
-          name: 'Proposals',
-          icon: IHNewspaper
-        },
-        leaderboard: {
-          name: 'Leaderboard',
-          icon: IHUserGroup
-        },
+        ...(spaceType.value === 'proposalsSpace'
+          ? {
+              proposals: {
+                name: 'Proposals',
+                icon: IHNewspaper
+              },
+              leaderboard: {
+                name: 'Leaderboard',
+                icon: IHUserGroup
+              }
+            }
+          : undefined),
+        ...(spaceType.value === 'discussionsSpace'
+          ? {
+              'townhall-topics': {
+                name: 'Townhall',
+                icon: IHAnnotation
+              },
+              'townhall-roles': {
+                name: 'Roles',
+                icon: IHUsers
+              }
+            }
+          : undefined),
         ...(space.value?.delegations && space.value.delegations.length > 0
           ? {
               delegates: {
@@ -311,6 +328,21 @@ function getNavigationConfig(
           icon: IHCog,
           hidden: !web3.value.account,
           active: false
+        }
+      }
+    };
+  }
+
+  if (mainRoute === 'townhall') {
+    return {
+      items: {
+        topics: {
+          name: 'Home',
+          icon: IHHome
+        },
+        roles: {
+          name: 'Roles',
+          icon: IHUsers
         }
       }
     };

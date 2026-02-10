@@ -61,7 +61,12 @@ const hasAppNav = computed(
     ['space', 'my', 'settings', 'pro'].includes(
       String(route.matched[0]?.name)
     ) &&
-    !['space-editor', 'space-proposal'].includes(String(route.matched[1]?.name))
+    ![
+      'space-editor',
+      'space-proposal',
+      'space-townhall-topic',
+      'space-townhall-create'
+    ].includes(String(route.matched[1]?.name))
 );
 
 const hasSidebar = computed(() => !isStandaloneLayout.value);
@@ -80,7 +85,12 @@ const hasPlaceHolderSidebar = computed(
       'auction-upcoming',
       'auction-verify-standalone'
     ].includes(String(route.matched[0]?.name)) &&
-    !['space-editor', 'space-proposal'].includes(String(route.matched[1]?.name))
+    ![
+      'space-editor',
+      'space-proposal',
+      'space-townhall-create',
+      'space-townhall-topic'
+    ].includes(String(route.matched[1]?.name))
 );
 
 const hasTopNav = computed(() => {
